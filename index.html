@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+<style>
+  body {
+    zoom: 170%; 
+    font-family: 'Fredoka', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #D0EAFF;
+    color: #333; 
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 30px; 
+  }
+
+  .navbar {
+    overflow: hidden;
+    background-color: #9DC9ED;
+    animation: slide-navbar 1s ease-out;
+    height: 80px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  .navbar-logo {
+    width: 60px; 
+    height: auto;
+  }
+
+  .navbar h2 {
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+    color: #333;
+    font-size: 28px; 
+  }
+
+  .search-bar {
+    border: 2px solid #333;
+    border-radius: 20px;
+    padding: 5px 10px;
+    width: 200px;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    grid-gap: 20px;
+    padding: 20px;
+  }
+
+  .gallery-item {
+    display: flex;
+    justify-content: center;
+  }
+
+  .card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 5px solid #5D83A2; 
+    background-color: #9DC9ED; 
+    width: 300px; 
+    height: 400px;
+  }
+
+  .card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .card img {
+    width:93%; 
+    height: 70%; 
+    border-radius: 10px;
+    display: block; 
+    margin: 11px auto 0; 
+  }
+  .info {
+    padding: 20px;
+    text-align: left; 
+  }
+
+  .info h2 {
+    margin-bottom: 10px;
+    margin-top: 0; 
+  }
+
+  .info p {
+    margin: 0;
+  } 
+</style>
+</head>
+<body>
+<div class="navbar">
+  <img src="plane.png" alt="Plane Logo" class="navbar-logo">
+  <h2>OUR PICTURES</h2>
+  <input type="text" placeholder="Search" class="search-bar" id="search-bar">
+</div>
+<div class="gallery" id="gallery">
+  
+</div>
+
+<script>
+  const images = [
+  { url: ' https://media.discordapp.net/attachments/1069213354322829403/1244535194585796689/IMG_3839.jpg?ex=66557738&is=665425b8&hm=9e0540f10def6636c598d6779a2888a298624f228c29778d96685e6adfb8138e&', date: 'September 26 , 2022', description: 'First movie together on Discord!' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244537935341162516/IMG_3840.jpg?ex=665579c6&is=66542846&hm=ff1c6ff286584a821d989af6851ef26ebfc7b399ba9a61121b0c7c75c6f1138b&', date: 'September 30 , 2022', description: 'The long-awaited confession.' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244540101460099092/IMG_3841.jpg?ex=66557bca&is=66542a4a&hm=629d49ba3055a540b3505625fd985e7db45e4fa0e31da3784abb8c44b6a391df&', date: 'October 17,  2022', description: 'First meet after how many years ' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244542153443508284/IMG_3842.jpg?ex=66557db3&is=66542c33&hm=0c07904a3e6354a3f115b2e13aa61f0cdd03716d520bd5845942803db9aeae47&', date: 'October 21,  2022', description: 'The mandatory pagpunta every time he’s with his friends' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244543426939191366/IMG_3843.jpg?ex=66557ee3&is=66542d63&hm=879b6b75d9118eb4abf3e24148a462a15b4423ad1141629d6d878de2d48769e0&', date: 'November 14 ,  2022', description: 'Picture after  kaming sundan sa bahay hanggang cathedral ' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244544504552362034/IMG_3844.jpg?ex=66557fe4&is=66542e64&hm=806bd7da7c3d5c485340487d225a38ec51c56faba5d56d4f409d6bcd73613ded&', date: 'December 02 ,  2022', description: 'Went to his school to watch his performance' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244545279177523254/IMG_3845.jpg?ex=6655809d&is=66542f1d&hm=43f8ff401c540d2b907fc5126f165b7b14f0107532ec7202ffd20e1c486739c4&', date: 'December 17 ,  2022', description: 'Family day picture' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244545952551796736/IMG_3846.jpg?ex=6655813d&is=66542fbd&hm=297af77a0e6a5674eab033527a28faeb4fcb67caa1064d4fed3efbbe9192b98c&', date: 'December 22 ,  2022', description: 'First concert together and last call before Christmas ' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244546359499952148/IMG_3847.jpg?ex=6655819e&is=6654301e&hm=464f6f22bc6f1246628d039a77ff3ce937e81a139ce98808e78923ce17a80dd0&', date: 'July 03, 2023', description: 'First pagkikita again after the break up ' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244547310826946580/IMG_3848.jpg?ex=66558281&is=66543101&hm=4571a0b2170945db0bd8621e8a717697492fc39c1ae6b58c39162b114f992eb3&', date: 'July 21, 2023', description: 'First punta again with kuya ren ' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244548212212367461/IMG_3849.jpg?ex=66558358&is=665431d8&hm=db5fdcb9f9d2a21a911a5fbf390466417ddae36a781f0559227e133df4ce5523&', date: 'September 02 , 2023', description: 'First badminton together ' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244550861309607957/IMG_8723.jpg?ex=665585cf&is=6654344f&hm=67f701c66606edf77db1ea3cb474bbb980f317bf4560c70c431408910550acc6&', date: 'November 06 , 2023', description: 'The confrontation' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244585269475283016/IMG_9142.jpg?ex=6655a5db&is=6654545b&hm=4f6ecc636181c2ed7e8a7ff0c9503d3774ec7c7a01ed32c56bde68cfb15316e0& ', date: ' November 12 , 2023', description: 'First pic after mass' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244584642451996757/IMG_0681.jpg?ex=6655a546&is=665453c6&hm=22686f8d06d5706857794e73a9e49e9b8b04d6ef846213f24cd7af27535d51e7& ', date: ' November 23 , 2023', description: 'this little boy is patiently waiting' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244551329477562428/IMG_3851.jpg?ex=6655863f&is=665434bf&hm=9a77de6ade4ddce4ccf9c6e317d907f86dd2e8f00971350741e90cbdf2bccca1&', date: 'December 07 , 2023', description: 'First time joining his gig' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244586966784151602/IMG_1663.jpg?ex=6655a770&is=665455f0&hm=afaf9aef64cd9fc883f15436be0fecc36b0ede58e7075db0e70dc8eedc884def& ', date: ' December 09 , 2023', description: 'Who are they copying here?' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244586113092423781/IMG_2282.jpg?ex=6655a6a4&is=66545524&hm=2c61e005657d144782d7666f5d27921c47e491ed9d388cf9cb1d6f0d736b5a19& ', date: ' December 15 , 2023', description: 'Forgiveness' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244553615339819110/IMG_2975.jpg?ex=66558860&is=665436e0&hm=9b1a81285b13f15585d02901560db5bd15ce18eed52aaf21ed1568c0467a4848&', date: 'December 17 , 2023', description: 'family day pic as BFF' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244587529357889638/IMG_3404.jpg?ex=6655a7f6&is=66545676&hm=38f79b2445441a7a98622b05023500247026e14c28c41f49102ab7f9b067c3c4& ', date: ' December 19 , 2023', description: 'His mama is calling!!' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244587914915090444/IMG_3747.jpg?ex=6655a852&is=665456d2&hm=4e24f85d0bd6968861aa1a8c96e0f1c0555e78b8defcb635edda70702460a5c9&', date: ' December 22 , 2023', description: 'A pic before xmas' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244588424304918548/IMG_4344.jpg?ex=6655a8cb&is=6654574b&hm=ac80dcb589b874ed14f6e0550e28ead0899b6b6b1088c84caf6b3aacbea49ed9&', date: ' December 31 , 2023', description: 'Her first time entering to their church' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244556520121962546/IMG_4894.jpg?ex=66558b15&is=66543995&hm=15ce6e7b61ec8293a33321a17a8b7cc2552fea2d2acde560cbb706f72a2fe6b0&', date: ' January 04 , 2024', description: 'The first promise ring he gave' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244557596967567370/IMG_4331.jpg?ex=66558c15&is=66543a95&hm=30fad74172f1fb772765b7a9e87acbcb19a965b95fb957ae17a3bbf2eae6c6d5&', date: ' January 21 , 2024', description: 'The pic before the disaster happens' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244590031365214301/IMG_6830.jpg?ex=6655aa4a&is=665458ca&hm=223372513891e64389e3f61b29f55f54834149288ba01a600382d1814ed8cf09&', date: ' January 29 , 2024', description: 'He just proved his love and concern for her.' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244591377531146280/IMG_7009.JPG?ex=6655ab8b&is=66545a0b&hm=b4dccd824c09a1f60f5a065a30b349416f56759a908253498d34784a8ee9a4e8&', date: ' February 01 , 2024', description: 'he put Yuan’s name on his thighs' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244591946027106364/IMG_7054.JPG?ex=6655ac13&is=66545a93&hm=d42d06de99387e900c720aad205d2e60f428dfbe76eb719f2804e8668579e7a7&', date: ' February 02 , 2024', description: 'Pilot is on his bass' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244559996520501248/IMG_7773.jpg?ex=66558e51&is=66543cd1&hm=e89ce60bc79a836366b9ec7de3f6e8a75d249a4dab6dbad554c2677b7189f0f0&', date: ' February 08 , 2024', description: 'Picture during sportsfest' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244567396736434216/IMG_8215.jpg?ex=66559536&is=665443b6&hm=b1e9023466f19e07c11bda060297b5a65b105fdc64aebccbda939b2faef376ad&', date: ' February 21 , 2024', description: ' They need to hurry, their parents are already looking for them! ' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244568044278251540/IMG_8654.jpg?ex=665595d0&is=66544450&hm=0eb101e85a7834e61e77be34aff28e984669e4610cbb682dc950fe040b885cf3&', date: ' March 02 , 2024', description: 'Ohh this boyy starting to be clingy to her' },
+
+{ url: '  https://media.discordapp.net/attachments/1069213354322829403/1244592290589310976/IMG_9246.JPG?ex=6655ac65&is=66545ae5&hm=4b59cccc73cfe13c96d1ae5445e38b44d58ca24a2d05d13e86aed81b8d09787a&', date: ' March  03 , 2024', description: 'unexpected matching outfit' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244564383984652399/IMG_9115.jpg?ex=66559268&is=665440e8&hm=24e48bf75756fa042b669a702c906b83687a81746e4ad4a8c55bd4ce45ea31a7&', date: ' March 09 , 2024', description: 'First couple case' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244592788243218452/IMG_9394.jpg?ex=6655acdc&is=66545b5c&hm=b6750c0ee1780d8a9a5bfaf5bfe1f3184e5ca7b8cb6afaa2f7765407560d09a0&', date: ' March 13 , 2024', description: 'never ending kape sa tala after school' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244562482497064970/16A7EDB2-795F-4BE8-B5A4-FA3596F553C4.jpg?ex=665590a2&is=66543f22&hm=ac6b494beb9e69191f878cfcfc10dfddd94eed80d16e256f7de0858f0bb68947&', date: ' March 15, 2024', description: 'First kiss ' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244566292757872703/9D2B6779-A868-4E05-BA2E-539681A059AF.jpg?ex=6655942f&is=665442af&hm=8a87ed2a0ee4c3954737a5656d7444171ebc665e42d1e39a53ebccba8a6bac10&', date: ' March 20 , 2024', description: ' Birthday suck ' },
+
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244563553067991131/IMG_0057.jpg?ex=665591a1&is=66544021&hm=c0c6316440780ef82f3a9543a6255288d1e18ec9f0fbfe6256850f533d8a6d87&', date: ' March 22, 2024', description: 'The best birthday gift she ever got  ' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244569498283933696/dclassic_2024-03-23_180835.934.jpg?ex=6655972b&is=665445ab&hm=3e8af0136b5d1ff70786c5b96bbaf4a03a3d3bfb69197c678f02d2abb2fb9b4a&', date: ' March 23 , 2024', description: 'I’ll strum the guitar moment' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244570979720757268/IMG_1297.jpg?ex=6655988c&is=6654470c&hm=44fda9443e7222370f3a4ec81dbeb2377d197ec36afe872f3a2a25890cd1e10c&', date: ' April 05 , 2024', description: 'Mirror pic in Resé' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244593756381118495/IMG_1995.jpg?ex=6655adc2&is=66545c42&hm=2716bf4595ab2eb30a1973b4244ac635f402192423bfa6f18414c4bbb3b0f248&', date: ' April 12 , 2024', description: 'first time experiencing a double date' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244572230416072774/IMG_2062.jpg?ex=665599b6&is=66544836&hm=31353f012de2e9febddbe396df54960f5f378dfb78c3bada6e7490dfd36df0d2&', date: ' April 14 , 2024', description: 'fave place' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244594316811304970/IMG_2381.JPG?ex=6655ae48&is=66545cc8&hm=c660560333da99ff365c97989e9ce62fbdeb05dc6893719aa853e5a56c7ee796&', date: ' April 19 , 2024', description: 'inuman session with the family' },
+
+{ url: 'https://media.discordapp.net/attachments/1069213354322829403/1244594785550077973/IMG_2455.jpg?ex=6655aeb8&is=66545d38&hm=5ae4070afa5a5b252248379677be0a0c7ed6979bef2c023169d497f9601fd82d&', date: ' April 22 , 2024', description: 'His first time entering to Yuan’s room' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244575043967516683/IMG_2587.jpg?ex=66559c55&is=66544ad5&hm=391d66069b49034389aa623c8185e7f16d831f31cd9277b08aac989b6110b3de&', date: ' April 25 , 2024', description: 'Second pic in L4C' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244576993488539779/IMG_2955.jpg?ex=66559e26&is=66544ca6&hm=88c9d67a624ac27f660bc5376f8d6b1cded41d0e6030fbc4a4268b148a872f04&', date: ' May 03 , 2024', description: 'He asked for permission to eat out because he said he is hungry' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244577914691780700/FullSizeRender.jpg?ex=66559f02&is=66544d82&hm=321404dc4b67751769b6de6d1c4e622f75242ceb87b0cd50f6cb1972ec9df2c0&', date: ' May 04 , 2024', description: 'Sponty date' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244578443463626812/IMG_3058.jpg?ex=66559f80&is=66544e00&hm=28e4ffd00ab4c95e4fcacdb710d2e915495134eb64fc10a6f015e1a8230246b7&', date: ' May 05 , 2024', description: 'First ride on his car' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244579096466292766/IMG_3197.jpg?ex=6655a01b&is=66544e9b&hm=248c8fd08e0a0214bacff7bf2199c0a3ff15a6aa9e06a000dc7d05caa7eebe92& ', date: ' May 09 , 2024', description: 'Suyo time!!' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244579737721114695/IMG_3509.jpg?ex=6655a0b4&is=66544f34&hm=970936f01f9f46ef67670a56b3f19a0b0ca3a0882166bc6a63ebd0afcd459681& ', date: ' May 18, 2024', description: 'Uhmm too many dramass' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244580439725969449/IMG_3689.jpg?ex=6655a15c&is=66544fdc&hm=093bcbbd83b2819b9c774c436b85e7860af43594b97a322180cba34e998fc68c& ', date: ' May 23, 2024', description: 'A well deserved rest after finals' },
+
+{ url: ' https://media.discordapp.net/attachments/1069213354322829403/1244581095387828256/IMG_3773.jpg?ex=6655a1f8&is=66545078&hm=88480ce63cd3fee66916d03a2f9434f0df9da35ab507fe41954a2462e4cdffc8& ', date: ' May 25, 2024', description: 'pic after mag pregnancy scare MWEHEH' },
+ ];
+
+
+  images.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateA - dateB;
+  });
+
+  async function addImagesToGallery() {
+    const gallery = document.getElementById('gallery');
+    const searchBar = document.getElementById('search-bar');
+
+    images.forEach(image => {
+      const galleryItem = document.createElement('div');
+      galleryItem.classList.add('gallery-item');
+
+      const card = document.createElement('div');
+      card.classList.add('card');
+
+      const img = document.createElement('img');
+      img.src = image.url;
+      img.alt = 'Image';
+
+      const info = document.createElement('div');
+      info.classList.add('info');
+      info.innerHTML = `<h2>${image.date}</h2><p>${image.description}</p>`;
+
+      card.appendChild(img);
+      card.appendChild(info);
+      galleryItem.appendChild(card);
+      gallery.appendChild(galleryItem);
+    });
+
+    searchBar.addEventListener('input', () => {
+      const searchTerm = searchBar.value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+
+      cards.forEach(card => {
+        const title = card.querySelector('h2').textContent.toLowerCase();
+        if (title.includes(searchTerm)) {
+          card.parentElement.style.display = 'block';
+        } else {
+          card.parentElement.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  addImagesToGallery();
+</script>
+</body>
+</html>
